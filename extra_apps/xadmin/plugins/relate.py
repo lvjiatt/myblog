@@ -3,12 +3,12 @@ from itertools import chain
 
 from django.urls.base import reverse
 from django.db.models.options import PROXY_PARENTS
-from django.utils import six
-from django.utils.encoding import force_text
+import six
+from django.utils.encoding import force_str
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from django.db.models.sql.query import LOOKUP_SEP
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.db import models
 
 
@@ -78,7 +78,7 @@ class RelateMenuPlugin(BaseAdminPlugin):
             field = rel.field
             rel_name = rel.get_related_field().name
 
-            verbose_name = force_text(opts.verbose_name)
+            verbose_name = force_str(opts.verbose_name)
             lookup_name = '%s__%s__exact' % (field.name, rel_name)
 
             link = ''.join(('<li class="with_menu_btn">',
@@ -145,9 +145,9 @@ class RelateObject(object):
         if len(self.to_objs) == 1:
             to_model_name = str(self.to_objs[0])
         else:
-            to_model_name = force_text(self.to_model._meta.verbose_name)
+            to_model_name = force_str(self.to_model._meta.verbose_name)
 
-        return mark_safe(u"<span class='rel-brand'>%s <i class='fa fa-caret-right'></i></span> %s" % (to_model_name, force_text(self.opts.verbose_name_plural)))
+        return mark_safe(u"<span class='rel-brand'>%s <i class='fa fa-caret-right'></i></span> %s" % (to_model_name, force_str(self.opts.verbose_name_plural)))
 
 
 class BaseRelateDisplayPlugin(BaseAdminPlugin):

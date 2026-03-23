@@ -16,14 +16,12 @@ Including another URLconf
 from django.conf import settings
 from django.views.static import serve  # 处理静态文件
 from django.contrib import admin
-from django.urls import path,include
-from django.conf.urls import url
-import xadmin
+from django.urls import path,include, re_path
 
 from blog.views import *
 
 urlpatterns = [
-    path('admin/', xadmin.site.urls),
+    path('admin/', admin.site.urls),
 
     path('',Index.as_view(),name='index'),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
@@ -32,11 +30,11 @@ urlpatterns = [
 
 if settings.DEBUG:
     #  配置静态文件访问处理
-    urlpatterns.append(url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}))
-    urlpatterns.append(url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}))
+    urlpatterns.append(re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}))
+    urlpatterns.append(re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}))
 
 
 # 全局页面配置
-handler403 = 'blog.views.page_not_look'
-handler404 = 'blog.views.page_not_found'
-handler500 = 'blog.views.page_error'
+# handler403 = 'blog.views.page_not_look'
+# handler404 = 'blog.views.page_not_found'
+# handler500 = 'blog.views.page_error'
